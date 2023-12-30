@@ -85,7 +85,7 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
 @app.get('/scrap-dashboard')
 async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.chromium.launch(headless=False)
         context = await browser.new_context()
         await context.add_cookies([
             {
