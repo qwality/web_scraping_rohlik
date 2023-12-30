@@ -48,8 +48,8 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
         if cp_courier_id and cp_courier_hash:
             return JSONResponse(
                 content={
-                    'cp_courier_id': cp_courier_id['value'],
-                    'cp_courier_hash': cp_courier_hash['value']
+                    'cp_courier_id': cp_courier_id,
+                    'cp_courier_hash': cp_courier_hash
                 },
                 status_code=200
             )
