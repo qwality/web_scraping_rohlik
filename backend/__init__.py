@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, Response, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, HTMLResponse
 from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -60,6 +60,26 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
                 },
                 status_code=404
             )
+
+@app.get('/scrap-dashboard')
+async def scrap_dashboard(request: Request, cp_courier_id: dict, cp_courier_hash: dict) -> JSONResponse:
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        context = await browser.new_context()
+        context.add_cookies([
+            cp_courier_id,
+            cp_courier_hash
+        ])
+        page = await context.new_page()
+        await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboards')
+
+        html = await page.inner_html('body')
+
+        return HTMLResponse(
+            content=html,
+            status_code=200
+        )
+
 
 @app.get('/{path:path}')
 async def catch_other(request: Request, path: str):
