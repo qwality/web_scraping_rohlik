@@ -87,7 +87,7 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         context = await browser.new_context()
-        context.add_cookies([
+        await context.add_cookies([
             {
                 'name': 'cp_courier_hash',
                 'value': cp_courier_hash,
