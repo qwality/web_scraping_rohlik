@@ -62,13 +62,23 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
             )
 
 @app.get('/scrap-dashboard')
-async def scrap_dashboard(request: Request, cp_courier_id: dict, cp_courier_hash: dict) -> JSONResponse:
+async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         context = await browser.new_context()
         context.add_cookies([
-            cp_courier_id,
-            cp_courier_hash
+            {
+                'name': 'cp_courier_hash',
+                'value': cp_courier_hash,
+                'domain': 'couriers-portal.rohlik.cz',
+                'path': '/cz'
+            },
+            {
+                'name': 'cp_courier_id',
+                'value': cp_courier_id,
+                'domain': 'couriers-portal.rohlik.cz',
+                'path': '/cz'
+            }
         ])
         page = await context.new_page()
         await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboards')
