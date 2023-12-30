@@ -1,0 +1,16 @@
+{
+    "servers": {
+        "this": {
+            "commands": {
+                "update": "git stash && git pull"
+            }
+        },
+        "backend": {
+            "commands": {
+                "run": "uvicorn backend:app --host 0.0.0.0 --port 8001 &",
+                "stop": "kill -9 $(lsof -i:8001 -t)"
+            }
+        }
+        
+    }
+}

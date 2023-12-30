@@ -1,0 +1,6 @@
+"frontend": {
+            "commands": {
+                "run": "npm --prefix ./frontend i && npm --prefix ./frontend run build && node frontend/build &",
+                "stop": "kill -9 $(lsof -i:3001 -t)"
+            }
+        }

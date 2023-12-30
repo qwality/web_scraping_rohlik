@@ -6,8 +6,11 @@ from fastapi.exceptions import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 import os
+from dotenv import load_dotenv
 
-dev = True
+load_dotenv()
+
+DEV = True if os.getenv('DEV') == 'True' else False
 
 app = FastAPI()
 '''FastAPI app reference'''
@@ -15,9 +18,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:8080",  # Vývojový server
-        "https://daniel-sykora.cz",  # Produkční server
-    ] if not dev else ["*"],
+        "http://localhost:3001",  # Vývojový server
+        "https://rohlik.daniel-sykora.cz",  # Produkční server
+    ] if not DEV else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -25,8 +28,8 @@ app.add_middleware(
 
 from playwright.async_api import async_playwright
 
-@app.get('/alt-login')
-async def rohlik_alt_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
+@app.get('/scrap-login')
+async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         context = await browser.new_context()
