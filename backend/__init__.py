@@ -46,13 +46,16 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
         cp_courier_hash = next(filter(lambda cookie: cookie['name'] == 'cp_courier_hash',cookies), None)
 
         if cp_courier_id and cp_courier_hash:
-            return JSONResponse(
+            response = JSONResponse(
                 content={
                     'cp_courier_id': cp_courier_id,
                     'cp_courier_hash': cp_courier_hash
                 },
                 status_code=200
             )
+            response.set_cookie(**cp_courier_id)
+            response.set_cookie(**cp_courier_hash)
+            return response
         else:
             return JSONResponse(
                 content={
