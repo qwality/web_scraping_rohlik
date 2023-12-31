@@ -114,9 +114,8 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         ])
         page = await context.new_page()
         await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboard')
-
-        html = await page.inner_html('body')
-        soup = BeautifulSoup(html, 'html.parser')
+        
+        soup = BeautifulSoup(await page.inner_html('body'), 'html.parser')
 
         dashboard_table_plate = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_plate')))
         dashboard_table_vehicle = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_vehicle')))
@@ -124,8 +123,6 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         badge_full_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='badge-full')))
         dashboard_table_stats_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats')))
         dashboard_table_stats_blocks = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats_blocks')))
-
-        # html = await page.inner_html('body')
 
         return JSONResponse(
             content={
