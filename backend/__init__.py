@@ -116,10 +116,17 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboard')
 
         html = await page.inner_html('body')
-
         soup = BeautifulSoup(html, 'html.parser')
-        c = soup.find_all(class_='dashboard_next_block')[0].innerText
-        print(c)
+
+        scrap_dashboard_s = list(map(lambda e: e.text, soup.find_all(class_='dashboard_next_block')))
+        badge_full_s = list(map(lambda e: e.text, soup.find_all(class_='badge_full')))
+        dashboard_table_stats_s = list(map(lambda e: e.text, soup.find_all(class_='dashboard_table_stats')))
+        dashboard_table_stats_blocks = next(map(lambda e: e.text, soup.find_all(class_='dashboard_table_stats_block')))
+
+        print(scrap_dashboard_s)
+        print(badge_full_s)
+        print(dashboard_table_stats_s)
+        print(dashboard_table_stats_blocks)
 
         # html = await page.inner_html('body')
 
