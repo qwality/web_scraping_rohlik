@@ -119,11 +119,12 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
 
         soup = BeautifulSoup(html, 'html.parser')
         c = soup.find_all(class_='dashboard_next_block')
+        print(c)
 
         # html = await page.inner_html('body')
 
-        return JSONResponse(
-            content=c,
+        return HTMLResponse(
+            content=html,
             status_code=200
         )
 
