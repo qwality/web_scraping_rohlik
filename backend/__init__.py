@@ -40,10 +40,19 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
         await page.fill(".login_field:nth-child(2) > *:first-child", str(pin))
         await page.click(".login_button")
 
-        cookies = await context.cookies()
+        # cookies = await context.cookies()
 
-        cp_courier_id = next(filter(lambda cookie: cookie['name'] == 'cp_courier_id',cookies), None)
-        cp_courier_hash = next(filter(lambda cookie: cookie['name'] == 'cp_courier_hash',cookies), None)
+        cp_courier_id = cp_courier_hash = None
+
+        async for cookie in context.cookies():
+            match cookie:
+                case {'name': 'cp_courier_id', **rest}:
+                    cp_courier_id = cookie['value']
+                case {'name': 'cp_courier_hash', **rest}:
+                    cp_courier_hash = cookie['value']
+
+        # cp_courier_id = next(filter(lambda cookie: cookie['name'] == 'cp_courier_id',cookies), None)
+        # cp_courier_hash = next(filter(lambda cookie: cookie['name'] == 'cp_courier_hash',cookies), None)
 
         if cp_courier_id and cp_courier_hash:
             response = JSONResponse(
@@ -85,7 +94,7 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
 @app.get('/scrap-dashboard')
 async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=False)
+        browser = await p.chromium.launch()
         context = await browser.new_context()
         await context.add_cookies([
             {
@@ -102,7 +111,7 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
             }
         ])
         page = await context.new_page()
-        await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboards')
+        await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboard')
 
         buddy_name = await page.inner_text('.dashboard_next_block:nth-of-type(2)')
 
