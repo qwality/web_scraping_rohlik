@@ -46,10 +46,17 @@ with sync_playwright() as p:
     soup = BeautifulSoup(page.content(), 'html.parser')
 
     # def get_inner_html(element: PageElement):
-    #     return element.
+    #     return element.stripped_strings
 
-    c = list(map(lambda e: e.text, soup.find_all('div', class_='dashboard_next_block')))
-    print(c)
+    scrap_dashboard_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_next_block')))
+    badge_full_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='badge-full')))
+    dashboard_table_stats_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats')))
+    dashboard_table_stats_blocks = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats_blocks')))
+
+    print(scrap_dashboard_s)
+    print(badge_full_s)
+    print(dashboard_table_stats_s)
+    print(dashboard_table_stats_blocks)
 
     # cp_courier_id = list(filter(lambda cookie: cookie['name'] == 'cp_courier_id',context.cookies()))[0]['value']
     # cp_courier_hash = list(filter(lambda cookie: cookie['name'] == 'cp_courier_hash',context.cookies()))[0]['value']

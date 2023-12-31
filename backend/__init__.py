@@ -118,20 +118,20 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         html = await page.inner_html('body')
         soup = BeautifulSoup(html, 'html.parser')
 
-        scrap_dashboard_s = list(map(lambda e: e.text, soup.find_all(class_='dashboard_next_block')))
-        badge_full_s = list(map(lambda e: e.text, soup.find_all(class_='badge_full')))
-        dashboard_table_stats_s = list(map(lambda e: e.text, soup.find_all(class_='dashboard_table_stats')))
-        dashboard_table_stats_blocks = next(map(lambda e: e.text, soup.find_all(class_='dashboard_table_stats_block')))
-
-        print(scrap_dashboard_s)
-        print(badge_full_s)
-        print(dashboard_table_stats_s)
-        print(dashboard_table_stats_blocks)
+        scrap_dashboard_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_next_block')))
+        badge_full_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='badge-full')))
+        dashboard_table_stats_s = list(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats')))
+        dashboard_table_stats_blocks = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_stats_blocks')))
 
         # html = await page.inner_html('body')
 
-        return HTMLResponse(
-            content=html,
+        return JSONResponse(
+            content={
+                'scrap_dashboard_s': scrap_dashboard_s,
+                'badge_full_s': badge_full_s,
+                'dashboard_table_stats_s': dashboard_table_stats_s,
+                'dashboard_table_stats_blocks': dashboard_table_stats_blocks
+            },
             status_code=200
         )
 
