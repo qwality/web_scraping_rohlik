@@ -118,7 +118,7 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         html = await page.inner_html('body')
 
         soup = BeautifulSoup(html, 'html.parser')
-        c = soup.find_all(class_='dashboard_next_block')
+        c = soup.find_all(class_='dashboard_next_block')[0].innerText
         print(c)
 
         # html = await page.inner_html('body')
