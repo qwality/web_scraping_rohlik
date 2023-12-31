@@ -115,12 +115,12 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         page = await context.new_page()
         await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboard')
 
-        buddy_name = await page.inner_text('.dashboard_next_block:nth-of-type(2)')
+        html = await page.inner_html('body')
 
         # html = await page.inner_html('body')
 
         return HTMLResponse(
-            content=buddy_name,
+            content=html,
             status_code=200
         )
 
