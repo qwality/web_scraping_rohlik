@@ -65,7 +65,7 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
             response.set_cookie(
                 key=cp_courier_id['name'],
                 value=cp_courier_id['value'],
-                domain=cp_courier_id['domain'],
+                domain='http://scrap-rohlik.qwality.fun',
                 path=cp_courier_id['path'],
                 expires=cp_courier_id['expires'],
                 secure=cp_courier_id['secure'],
@@ -75,7 +75,7 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
             response.set_cookie(
                 key=cp_courier_hash['name'],
                 value=cp_courier_hash['value'],
-                domain=cp_courier_hash['domain'],
+                domain='http://scrap-rohlik.qwality.fun',
                 path=cp_courier_hash['path'],
                 expires=cp_courier_hash['expires'],
                 secure=cp_courier_hash['secure'],
