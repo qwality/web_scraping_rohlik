@@ -47,9 +47,9 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
         for cookie in await context.cookies():
             match cookie:
                 case {'name': 'cp_courier_id', **rest}:
-                    cp_courier_id = cookie['value']
+                    cp_courier_id = cookie
                 case {'name': 'cp_courier_hash', **rest}:
-                    cp_courier_hash = cookie['value']
+                    cp_courier_hash = cookie
 
         # cp_courier_id = next(filter(lambda cookie: cookie['name'] == 'cp_courier_id',cookies), None)
         # cp_courier_hash = next(filter(lambda cookie: cookie['name'] == 'cp_courier_hash',cookies), None)
