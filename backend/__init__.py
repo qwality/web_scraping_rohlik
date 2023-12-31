@@ -91,6 +91,8 @@ async def scrap_login(request: Request, id: int=0, pin: int=0) -> JSONResponse:
                 status_code=404
             )
 
+from bs4 import BeautifulSoup
+
 @app.get('/scrap-dashboard')
 async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
     async with async_playwright() as p:
