@@ -114,7 +114,7 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
         ])
         page = await context.new_page()
         await page.goto('https://couriers-portal.rohlik.cz/cz/?p=dashboard')
-        
+
         soup = BeautifulSoup(await page.inner_html('body'), 'html.parser')
 
         dashboard_table_plate = next(map(lambda e: list(e.stripped_strings), soup.find_all(class_='dashboard_table_plate')))
@@ -135,6 +135,44 @@ async def scrap_dashboard(request: Request, cp_courier_id: str, cp_courier_hash:
             },
             status_code=200
         )
+
+@app.get('/scrap-blocks')
+async def scrap_blocks(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=blocks
+    # p=blocks&next_month
+    
+    return 'not implemented yet'
+
+@app.get('/scrap-invoicing')
+async def scrap_invoicing(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=invoicing2&month=202312 (month=YYYYMM)
+    # p=invoices
+    
+    return 'not implemented yet'
+
+@app.get('/scrap-scorecard')
+async def scrap_scorecard(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=scorecard
+    
+    return 'not implemented yet'
+
+@app.get('/scrap-karma')
+async def scrap_karma(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=karma
+    
+    return 'not implemented yet'
+
+@app.get('/scrap-bonpen')
+async def scrap_bonpen(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=bonpen
+    
+    return 'not implemented yet'
+
+@app.get('/scrap-wallet')
+async def scrap_wallet(request: Request, cp_courier_id: str, cp_courier_hash: str) -> JSONResponse:
+    # p=wallet
+    
+    return 'not implemented yet'
 
 
 @app.get('/{path:path}')
